@@ -1,9 +1,5 @@
 # Reproducible Research: Peer Assessment 1
 
-```r
-library(knitr)
-opts_chunk$set(echo = TRUE)
-```
 
 ## Introduction
 This assignment makes use of data from a personal activity monitoring device. This device collects data at 5 minute intervals through out the day. The data consists of two months of data from an anonymous individual collected during the months of October and November, 2012 and include the number of steps taken in 5 minute intervals each day.
@@ -43,8 +39,6 @@ library(dplyr)
 
 ```r
 library(ggplot2)
-library(lubridate)
-library(timeDate)
 ```
 ## Loading and preprocessing the data
 Show any code that is needed to:
@@ -59,6 +53,7 @@ data_file <- read.csv("activity.csv", header = TRUE, sep = ",")
 Change the date format using lubridate()
 
 ```r
+library(lubridate)
 data_file$date <- ymd(data_file$date)
 data_file$steps <- as.numeric(data_file$steps)
 ```
@@ -87,7 +82,7 @@ hist(total_steps$steps,
      breaks=20,  col = "blue")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
 
 3.Calculate and report the mean and median of the total number of steps taken per day.
 
@@ -128,7 +123,7 @@ Ploting the series
 ggplot(daily_pattern, aes(x=interval, y=d_steps)) + geom_line(color = "blue")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-12-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-10-1.png) 
 
 2.Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
@@ -201,7 +196,7 @@ hist(full_total_steps$steps,
      breaks=20,  col = "blue")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-18-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-16-1.png) 
 
 ```r
 mean_total_steps_full <- mean(full_total_steps$steps)
@@ -232,6 +227,7 @@ The impact of filling missing data with the average number of steps in the same 
 Identify which date is a week day or a weekend day with timeDate()
 
 ```r
+library(timeDate)
 full_data$daystype <- ifelse((isWeekday(data_file$date, wday=1:5)),"Weekdays", "Weekend")
 head(full_data)
 ```
@@ -248,9 +244,7 @@ head(full_data)
 Create a new data frame group by the new variable and the interval
 
 ```r
-act_pattern <- full_data %>%
-      group_by(daystype,interval) %>%
-      summarize(steps=mean(steps))
+act_pattern <- full_data %>% group_by(daystype,interval) %>% summarize(steps=mean(steps))
 ```
 
 2.Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
@@ -261,5 +255,5 @@ ggplot(act_pattern, aes(x=interval, y=steps, daystype)) +
       facet_wrap(~daystype, ncol = 1, nrow=2)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-24-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-21-1.png) 
 

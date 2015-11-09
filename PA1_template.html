@@ -64,8 +64,6 @@ img {
 </div>
 
 
-<pre class="r"><code>library(knitr)
-opts_chunk$set(echo = TRUE)</code></pre>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>This assignment makes use of data from a personal activity monitoring device. This device collects data at 5 minute intervals through out the day. The data consists of two months of data from an anonymous individual collected during the months of October and November, 2012 and include the number of steps taken in 5 minute intervals each day.</p>
@@ -94,9 +92,7 @@ opts_chunk$set(echo = TRUE)</code></pre>
 ## The following objects are masked from 'package:base':
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(ggplot2)
-library(lubridate)
-library(timeDate)</code></pre>
+<pre class="r"><code>library(ggplot2)</code></pre>
 </div>
 <div id="loading-and-preprocessing-the-data" class="section level2">
 <h2>Loading and preprocessing the data</h2>
@@ -104,7 +100,8 @@ library(timeDate)</code></pre>
 <p>1.Load the data (i.e. read.csv() ) Assuming the file already exist in the working directory</p>
 <pre class="r"><code>data_file &lt;- read.csv(&quot;activity.csv&quot;, header = TRUE, sep = &quot;,&quot;)</code></pre>
 <p>2.Process/transform the data (if necessary) into a format suitable for your analysis Change the date format using lubridate()</p>
-<pre class="r"><code>data_file$date &lt;- ymd(data_file$date)
+<pre class="r"><code>library(lubridate)
+data_file$date &lt;- ymd(data_file$date)
 data_file$steps &lt;- as.numeric(data_file$steps)</code></pre>
 <p>Preparing a data frame without NA</p>
 <pre class="r"><code>proc_data &lt;- filter(data_file, !is.na(steps))</code></pre>
@@ -202,7 +199,8 @@ median_total_steps_full &lt;- median(full_total_steps$steps)</code></pre>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level2">
 <h2>Are there differences in activity patterns between weekdays and weekends?</h2>
 <p>1.Create a new factor variable in the dataset with two levels - “weekday” and “weekend” indicating whether a given date is a weekday or weekend day. Identify which date is a week day or a weekend day with timeDate()</p>
-<pre class="r"><code>full_data$daystype &lt;- ifelse((isWeekday(data_file$date, wday=1:5)),&quot;Weekdays&quot;, &quot;Weekend&quot;)
+<pre class="r"><code>library(timeDate)
+full_data$daystype &lt;- ifelse((isWeekday(data_file$date, wday=1:5)),&quot;Weekdays&quot;, &quot;Weekend&quot;)
 head(full_data)</code></pre>
 <pre><code>##       steps       date interval   d_steps daystype
 ## 1 1.7169811 2012-10-01        0 1.7169811 Weekdays
@@ -212,9 +210,7 @@ head(full_data)</code></pre>
 ## 5 0.0754717 2012-10-01       20 0.0754717 Weekdays
 ## 6 2.0943396 2012-10-01       25 2.0943396 Weekdays</code></pre>
 <p>Create a new data frame group by the new variable and the interval</p>
-<pre class="r"><code>act_pattern &lt;- full_data %&gt;%
-      group_by(daystype,interval) %&gt;%
-      summarize(steps=mean(steps))</code></pre>
+<pre class="r"><code>act_pattern &lt;- full_data %&gt;% group_by(daystype,interval) %&gt;% summarize(steps=mean(steps))</code></pre>
 <p>2.Make a panel plot containing a time series plot (i.e. type = “l”) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).</p>
 <pre class="r"><code>ggplot(act_pattern, aes(x=interval, y=steps, daystype)) +
       geom_line(colour=&quot;blue&quot;) +

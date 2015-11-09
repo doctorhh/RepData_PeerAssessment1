@@ -5,7 +5,7 @@ output:
     fig_caption: yes
     keep_md: yes
 ---
-```{r}
+```{r setoption, echo=FALSE}
 library(knitr)
 opts_chunk$set(echo = TRUE)
 ```
@@ -31,8 +31,6 @@ The variables included in this dataset are:
 ```{r}
 library(dplyr)
 library(ggplot2)
-library(lubridate)
-library(timeDate)
 ```
 ## Loading and preprocessing the data
 Show any code that is needed to:
@@ -44,7 +42,8 @@ data_file <- read.csv("activity.csv", header = TRUE, sep = ",")
 ```
 2.Process/transform the data (if necessary) into a format suitable for your analysis
 Change the date format using lubridate()
-```{r}
+```{r setvartype}
+library(lubridate)
 data_file$date <- ymd(data_file$date)
 data_file$steps <- as.numeric(data_file$steps)
 ```
@@ -152,15 +151,14 @@ The impact of filling missing data with the average number of steps in the same 
 ## Are there differences in activity patterns between weekdays and weekends?
 1.Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 Identify which date is a week day or a weekend day with timeDate()
-```{r}
+```{r setweektype}
+library(timeDate)
 full_data$daystype <- ifelse((isWeekday(data_file$date, wday=1:5)),"Weekdays", "Weekend")
 head(full_data)
 ```
 Create a new data frame group by the new variable and the interval
 ```{r}
-act_pattern <- full_data %>%
-      group_by(daystype,interval) %>%
-      summarize(steps=mean(steps))
+act_pattern <- full_data %>% group_by(daystype,interval) %>% summarize(steps=mean(steps))
 ```
 
 2.Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
