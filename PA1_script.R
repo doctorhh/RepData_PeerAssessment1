@@ -64,6 +64,3 @@ act_pattern <- full_data %>%
 ggplot(act_pattern, aes(x=interval, y=steps, daystype)) +
       geom_line(colour="blue") +
       facet_wrap(~daystype, ncol = 1, nrow=2)
-
-# knit2html()
-# knit2html(input   = "PA1_template.Rmd", output  = "PA1_template.html")
