@@ -120,7 +120,9 @@ daily_pattern <- proc_data %>% group_by(interval) %>% summarize(d_steps = mean(s
 Ploting the series
 
 ```r
-ggplot(daily_pattern, aes(x=interval, y=d_steps)) + geom_line(color = "blue")
+ggplot(daily_pattern, aes(x=interval, y=d_steps)) + geom_line(color = "blue") +
+      xlab("Interval") +
+      ylab(" Average steps")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-10-1.png) 
@@ -252,6 +254,8 @@ act_pattern <- full_data %>% group_by(daystype,interval) %>% summarize(steps=mea
 ```r
 ggplot(act_pattern, aes(x=interval, y=steps, daystype)) +
       geom_line(colour="blue") +
+      xlab("Interval") +
+      ylab("Average steps") +
       facet_wrap(~daystype, ncol = 1, nrow=2)
 ```
 
