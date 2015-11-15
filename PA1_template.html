@@ -92,16 +92,17 @@ img {
 ## The following objects are masked from 'package:base':
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(ggplot2)</code></pre>
+<pre class="r"><code>library(ggplot2)
+library(lubridate)
+library(timeDate)</code></pre>
 </div>
 <div id="loading-and-preprocessing-the-data" class="section level2">
 <h2>Loading and preprocessing the data</h2>
 <p>Show any code that is needed to:</p>
 <p>1.Load the data (i.e. read.csv() ) Assuming the file already exist in the working directory</p>
 <pre class="r"><code>data_file &lt;- read.csv(&quot;activity.csv&quot;, header = TRUE, sep = &quot;,&quot;)</code></pre>
-<p>2.Process/transform the data (if necessary) into a format suitable for your analysis Change the date format using lubridate()</p>
-<pre class="r"><code>library(lubridate)
-data_file$date &lt;- ymd(data_file$date)
+<p>2.Process/transform the data (if necessary) into a format suitable for your analysis. Changing the date format using lubridate()</p>
+<pre class="r"><code>data_file$date &lt;- ymd(data_file$date)
 data_file$steps &lt;- as.numeric(data_file$steps)</code></pre>
 <p>Preparing a data frame without NA</p>
 <pre class="r"><code>proc_data &lt;- filter(data_file, !is.na(steps))</code></pre>
@@ -200,9 +201,8 @@ median_total_steps_full &lt;- median(full_total_steps$steps)</code></pre>
 </div>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level2">
 <h2>Are there differences in activity patterns between weekdays and weekends?</h2>
-<p>1.Create a new factor variable in the dataset with two levels - “weekday” and “weekend” indicating whether a given date is a weekday or weekend day. Identify which date is a week day or a weekend day with timeDate()</p>
-<pre class="r"><code>library(timeDate)
-full_data$daystype &lt;- ifelse((isWeekday(data_file$date, wday=1:5)),&quot;Weekdays&quot;, &quot;Weekend&quot;)
+<p>1.Create a new factor variable in the dataset with two levels - “weekday” and “weekend” indicating whether a given date is a weekday or weekend day. Identifying which date is a week day or a weekend day with timeDate()</p>
+<pre class="r"><code>full_data$daystype &lt;- ifelse((isWeekday(data_file$date, wday=1:5)),&quot;Weekdays&quot;, &quot;Weekend&quot;)
 head(full_data)</code></pre>
 <pre><code>##       steps       date interval   d_steps daystype
 ## 1 1.7169811 2012-10-01        0 1.7169811 Weekdays

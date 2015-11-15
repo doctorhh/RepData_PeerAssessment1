@@ -39,6 +39,8 @@ library(dplyr)
 
 ```r
 library(ggplot2)
+library(lubridate)
+library(timeDate)
 ```
 ## Loading and preprocessing the data
 Show any code that is needed to:
@@ -49,11 +51,10 @@ Assuming the file already exist in the working directory
 ```r
 data_file <- read.csv("activity.csv", header = TRUE, sep = ",")
 ```
-2.Process/transform the data (if necessary) into a format suitable for your analysis
-Change the date format using lubridate()
+2.Process/transform the data (if necessary) into a format suitable for your analysis.
+Changing the date format using lubridate()
 
 ```r
-library(lubridate)
 data_file$date <- ymd(data_file$date)
 data_file$steps <- as.numeric(data_file$steps)
 ```
@@ -226,10 +227,9 @@ The impact of filling missing data with the average number of steps in the same 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 1.Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
-Identify which date is a week day or a weekend day with timeDate()
+Identifying which date is a week day or a weekend day with timeDate()
 
 ```r
-library(timeDate)
 full_data$daystype <- ifelse((isWeekday(data_file$date, wday=1:5)),"Weekdays", "Weekend")
 head(full_data)
 ```
